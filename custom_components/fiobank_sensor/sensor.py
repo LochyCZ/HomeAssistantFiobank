@@ -23,7 +23,7 @@ from datetime import timedelta, datetime, date
 
 import random
 
-#from fiobank import FioBank
+from fiobank import FioBank
 
 MIN_TIME_BETWEEN_SCANS = timedelta(hours=6)
 
@@ -62,16 +62,7 @@ class FiobankaSensor(SensorEntity):
 
     @Throttle(MIN_TIME_BETWEEN_SCANS)
     def update(self) -> None:
-        today = datetime.now()
-        url = _RESOURCE + "periods/" + self.api_key +"/" + today.strftime("%Y-%m-%d") + "/" + today.strftime("%Y-%m-%d") + "/transactions.json"
-        response = requests.get(url)
-        response.raise_for_status()  # raises exception when not a 2xx response
-        if response.status_code == 200:
-            if response.json()['accountStatement']['info']['closingBalance'] > 0:
-                self._attr_native_value = response.json()['accountStatement']['info']['closingBalance']
-                #_LOGGER.error("fiobank_sensor success string: %s", response.json())
-            else:
-                _LOGGER.error("fiobank_sensor error in number: %s", response.json())
-        else:
-            _LOGGER.error("fiobank_sensor error in download the json with status code: %s", response.status_code)
+        client = FioBank(token=self.api_key, decimal=True)
+        info = client.info()
+        self._attr_native_value = info["balance"]
         
