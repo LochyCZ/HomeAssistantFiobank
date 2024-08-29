@@ -3,7 +3,7 @@
   "name": "Fio Banka",
   "codeowners": [],
   "dependencies": [],
-  "documentation": "https://github.com/home-assistant/example-custom-config/tree/master/custom_components/example_sensor/",
+  "documentation": "https://github.com/LochyCZ/HomeAssistantFiobank/",
   "iot_class": "local_polling",
   "requirements": ["fiobank>=3.1.0"],
   "version": "0.1.1"
